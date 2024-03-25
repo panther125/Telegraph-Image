@@ -25,15 +25,17 @@
       height: auto;
       opacity: 0;
   }
-</style>
+   </style>
 <body>
-    
     <div class="pubu">
-
     </div>
 </body>
 <script>
     const result = '[{"name":"26f98eae8f22d633419d2.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708229634608}},{"name":"4a6e4012db8e05ba7ec91.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708094978418}},{"name":"4aee6952be12206376a10.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1710496821201}},{"name":"555274946e1eaae2b02c9.jpg","metadata":{"ListType":"None","Label":"None","TimeStamp":1708149302153}},{"name":"5d224a10d1d20fa441e16.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1709216018862}},{"name":"6fcead8f46340a4a72eb3.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1709215668949}},{"name":"79b9cbfcdcff8218b7bd2.jpg","metadata":{"ListType":"None","Label":"None","TimeStamp":1708094515243}},{"name":"842d4f9114aed0ded800f.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708233472518}},{"name":"8848cd3ec6018553098c7.mp4","metadata":{"ListType":"None","Label":"None","TimeStamp":1708095196521}},{"name":"8a7e15ebf4b87a116da50.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708233804817}},{"name":"9f6cd8bf678dc6dd6ac03.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708247110735}},{"name":"a4d9328e4f7de427f6859.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708246604095}},{"name":"ab41d3067bc0bbeaf48a9.jpg","metadata":{"ListType":"None","Label":"None","TimeStamp":1709217137452}},{"name":"ab8fb804b6d8ee5eeff41.jpg","metadata":{"ListType":"None","Label":"None","TimeStamp":1708095247874}},{"name":"c1b5810324075458023b0.jpg","metadata":{"ListType":"None","Label":"None","TimeStamp":1708093974994}},{"name":"d77d2d079ffea665b886d.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708229898978}},{"name":"ddfcc79204678e07e35e6.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708229585099}},{"name":"eaa831562add75ad04904.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708232100179}},{"name":"fa545f4f33ceb182ae377.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1709042989025}},{"name":"fc7e9c7c153e323ef6068.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708230991417}},{"name":"fe59a95476ccca4927c31.png","metadata":{"ListType":"None","Label":"None","TimeStamp":1708231055143}}]';
+    // fetch('https://image.gincode.icu/api/manage/list')
+    // .then(response => response.json())
+    // .then(data => {this.result = data;console.log(result)})
+    // .catch(error => console.error('Error:', error));
     console.log(JSON.parse(result)[0].name)
     this.tableData=JSON.parse(result);
     var targetElement = document.querySelector('.pubu');

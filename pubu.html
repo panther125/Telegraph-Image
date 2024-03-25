@@ -28,18 +28,6 @@
 <body>
   <div id="app">
     <div class="pubu">
-        <template slot-scope="scope" class="box" >
-            <el-image
-              v-for="(item, index) in tableData"
-              v-if="item.name.indexOf('.mp4')<0"
-              style="width: 100%; height: 100%;"
-              :src="'/file/'+item.name"
-              :zoom-rate="1.2"
-              :preview-src-list="['/file/'+item.name]"
-              fit="cover"
-              lazy
-            />
-        </template>    
     </div>
   </div>
 <!-- import Vue before Element -->
@@ -138,6 +126,7 @@ fetch("./api/manage/list", requestOptions)
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "7t5ai7agat");
 </script>
+</body>
 <script type="text/javascript">
   window.onload = function(){
     var oBox=document.getElementsByClassName("box");
@@ -188,5 +177,4 @@ fetch("./api/manage/list", requestOptions)
   }
   }
   </script>
-</body>
 </html>
