@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/css">
+  body{
+    margin: 0;
+    padding: 0;
+  }
+.pubu{
+    position: absolute;
+    width: 1100px;
+    left: 50%;
+    margin-left: -550px;
+}
+.box{
+    padding:20px 0 0 20px;
+    float: left;
+}
+.box img{
+    width: 200px;
+    height: auto;
+    opacity: 0;
+}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="pubu">
+        <template slot-scope="scope" class="box" >
+            <el-image
+              v-if="scope.row.name.indexOf('.mp4')<0"
+              style="width: 100%; height: 100%;"
+              :src="'/file/'+scope.row.name"
+              :zoom-rate="1.2"
+              :preview-src-list="['/file/'+scope.row.name]"
+              fit="cover"
+              lazy
+            />
+        </template>    
+    </div>
+  </div>
+<script type="text/javascript">
+window.onload = function(){
+  var oBox=document.getElementsByClassName("box");
+  var oImg=document.getElementsByTagName('img');
+  var oBoxw=oBox[0].offsetWidth;
+  var cols=5;
+
+  loadImg(oImg);
+  window.onscroll = function(){
+    loadImg(oImg);
+  };
+
+  function waterfall(ele,col,eleWidth){
+    var hArr = [];
+    for(var i = 0;i < ele.length;i++){
+        if(i < col){
+            hArr.push(ele[i].offsetHeight);
+        }else{
+            //min不能用于数组，apply的第一个参数传递作用域，第二个参数传递数组。Math.min.apply(null, [1, 2, 3]) 等价于 Math.min(1, 2, 3)
+            var minH = Math.min.apply(null,hArr);
+            var index = hArr.indexOf(minH);
+            ele[i].style.position = 'absolute';   
+            ele[i].style.top = minH + 'px';           //ele.style.left/top 是有px的，而offsetHeight/offsetWidth是没有px的
+            ele[i].style.left = index * eleWidth + 'px';
+            hArr[index] += ele[i].offsetHeight;
+        }
+    }
+  }
+
+  function loadImg(arr){
+  for( var i = 0,len = arr.length; i < len; i++){
+    //判断图片相对应视图窗口的高度是否小于屏幕可视窗口大小
+    if(arr[i].getBoundingClientRect().top < document.documentElement.clientHeight && !arr[i].isLoad){  //判断图片
+      arr[i].isLoad = true;
+      if(arr[i].dataset){                    //判断是否存在HTML5的dataset对象
+        aftLoadImg(arr[i],arr[i].dataset.original);    
+      }else{
+        aftLoadImg(arr[i],arr[i].getAttribute("data-original"));
+      }
+      arr[i].style.cssText = "transition: opacity 4s; opacity: 1;"    //使opacity变化在4秒内完成
+    }
+  }
+}
+
+function aftLoadImg(obj,url){
+  obj.src = url;
+  waterfall(oBox,cols,oBoxw);   //需要再次调用瀑布流方法
+}
+}
+</script>
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js" integrity="sha256-kXTEJcRFN330VirZFl6gj9+UM6gIKW195fYZeR3xDhc=" crossorigin="anonymous"></script>
+<!-- import JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/element-ui@2.15.3/lib/index.js" integrity="sha256-OFVFYfqhQ9nDnKh+NfIsefpy/fnjTwkK909ZYgo45nw=" crossorigin="anonymous"></script>
+<script>
+  var app=new Vue({
+      el: '#app',
+      data: {
+        Number:0,
+        showLogoutButton:false,
+        tableData: [],
+        dialogFormVisible: false,
+        password:'123456'
+      },
+      mounted () {
+      //check if the user is logged in
+      //read the basic auth credientials from the browser
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow',
+        //include authorization credientials
+        credentials: 'include'
+      };
+      fetch("./api/manage/check", requestOptions)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+          if(result=="true"){
+            this.showLogoutButton=true;
+          }else if(result=="Not using basic auth."){
+            
+          }
+          else{
+            window.location.href="./api/manage/login";
+          }
+        })
+        .catch(error =>  {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
+
+
+
+      Array.prototype.remove = function(from, to) {
+        var rest = this.slice((to || from) + 1 || this.length);
+        this.length = from < 0 ? this.length + from : from;
+        return this.push.apply(this, rest);
+      };
+      var requestOptions = {
+  method: 'GET',
+  redirect: 'follow',
+  //include authorization credientials
+  credentials: 'include'
+  
+};
+fetch("./api/manage/list", requestOptions)
+  //判断是否需要登录
+  .then(response => {
+    if(response.status==401){
+      alert("请先登录");
+      window.location.href="./api/manage/login";
+    }
+    else{
+      return response;
+    }
+  })
+  .then(response => response.text()) 
+  .then(result => {this.tableData=JSON.parse(result);console.log(result);this.Number=this.tableData.length})
+  .catch(error => {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
+
+    }
+    })
+    
+</script>
+<script>
+  (function(h,o,t,j,a,r){
+      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+      h._hjSettings={hjid:2531461,hjsv:6};
+      a=o.getElementsByTagName('head')[0];
+      r=o.createElement('script');r.async=1;
+      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+      a.appendChild(r);
+  })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "7t5ai7agat");
+</script>
+</body>
+</html>
