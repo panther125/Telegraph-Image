@@ -30,11 +30,12 @@
     <div class="pubu">
         <template slot-scope="scope" class="box" >
             <el-image
-              v-if="scope.row.name.indexOf('.mp4')<0"
+              v-for="(item, index) in tableData"
+              v-if="item.name.indexOf('.mp4')<0"
               style="width: 100%; height: 100%;"
-              :src="'/file/'+scope.row.name"
+              :src="'/file/'+item.name"
               :zoom-rate="1.2"
-              :preview-src-list="['/file/'+scope.row.name]"
+              :preview-src-list="['/file/'+item.name]"
               fit="cover"
               lazy
             />
@@ -78,8 +79,6 @@
         })
         .catch(error =>  {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
 
-
-
       Array.prototype.remove = function(from, to) {
         var rest = this.slice((to || from) + 1 || this.length);
         this.length = from < 0 ? this.length + from : from;
@@ -104,7 +103,18 @@ fetch("./api/manage/list", requestOptions)
     }
   })
   .then(response => response.text()) 
-  .then(result => {this.tableData=JSON.parse(result);console.log(result);this.Number=this.tableData.length})
+  .then(result => {
+    this.tableData=JSON.parse(result);
+    var targetElement = document.querySelector('.pubu');
+
+    for (let i = 0; i < tableData.length; i++){
+      if(tableData[i].name.indexOf(".mp4")>0)continue;
+      var newDiv = document.createElement('div');
+      newDiv.className = 'box';
+      newDiv.innerHTML = '<img data-original='+"/file/"+tableData[i].name+' src='+"/file/"+tableData[i].name +'alt="">';
+      targetElement.appendChild(newDiv);
+    }
+  })
   .catch(error => {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
 
     }
