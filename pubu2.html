@@ -94,17 +94,15 @@ fetch("./api/manage/list", requestOptions)
   .then(result => {
     imgList =JSON.parse(result);
     var targetElement = document.querySelector('.pubu');
-    console.log(result)
-    for (let i = 0; i < imgList.length; i++){
-      if(imgList[i].name.indexOf(".mp4")>0)continue;
-      var newDiv = document.createElement('div');
-      newDiv.className = 'box';
-      newDiv.innerHTML = '<img data-original='+"/file/"+imgList[i].name+' src='+"/file/"+imgList[i].name +' alt="">';
-      targetElement.appendChild(newDiv);
+    //console.log(result)
+    let str ='';
+    for (let i = 0; i < tableData.length; i++){
+      if(tableData[i].name.indexOf(".mp4")>0)continue;
+      str += '<img data-original='+"https://image.gincode.icu/file/"+tableData[i].name+' src='+"https://image.gincode.icu/file/"+tableData[i].name +'>';
     }
+    targetElement.innerHTML = str
   })
   .catch(error => {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
-
     }
     })
     
@@ -127,54 +125,48 @@ fetch("./api/manage/list", requestOptions)
 })(window, document, "clarity", "script", "7t5ai7agat");
 </script>
 </body>
-<script type="text/javascript">
-  window.onload = function(){
-    var oBox=document.getElementsByClassName("box");
-    var oImg=document.getElementsByTagName('img');
-    var oBoxw=oBox[0].offsetWidth;
-    var cols=5;
-  
-    loadImg(oImg);
-    window.onscroll = function(){
-      loadImg(oImg);
-    };
-  
-    function waterfall(ele,col,eleWidth){
-      var hArr = [];
-      for(var i = 0;i < ele.length;i++){
-          if(i < col){
-              hArr.push(ele[i].offsetHeight);
-          }else{
-              //min不能用于数组，apply的第一个参数传递作用域，第二个参数传递数组。Math.min.apply(null, [1, 2, 3]) 等价于 Math.min(1, 2, 3)
-              var minH = Math.min.apply(null,hArr);
-              var index = hArr.indexOf(minH);
-              ele[i].style.position = 'absolute';   
-              ele[i].style.top = minH + 'px';           //ele.style.left/top 是有px的，而offsetHeight/offsetWidth是没有px的
-              ele[i].style.left = index * eleWidth + 'px';
-              hArr[index] += ele[i].offsetHeight;
-          }
-      }
-    }
-  
-    function loadImg(arr){
-    for( var i = 0,len = arr.length; i < len; i++){
-      //判断图片相对应视图窗口的高度是否小于屏幕可视窗口大小
-      if(arr[i].getBoundingClientRect().top < document.documentElement.clientHeight && !arr[i].isLoad){  //判断图片
-        arr[i].isLoad = true;
-        if(arr[i].dataset){                    //判断是否存在HTML5的dataset对象
-          aftLoadImg(arr[i],arr[i].dataset.original);    
-        }else{
-          aftLoadImg(arr[i],arr[i].getAttribute("data-original"));
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    $(function () {
+        // 获取图片的宽度(200px)
+        let imgWidth = $('img').outerWidth(); // 200
+
+        waterfallHandler();
+
+        // 瀑布流处理
+        function waterfallHandler() {
+            // 获取图片的列数
+            let column = parseInt($(window).width() / imgWidth);
+
+            // 高度数组
+            let heightArr = [];
+            for(let i=0; i<column; i++) {
+                heightArr[i] = 0;
+            }
+
+            // 遍历所有图片进行定位处理
+            $.each($('img'), function (index, item) {
+                // 当前元素的高度
+                let itemHeight = $(item).outerHeight();
+                // 高度数组最小的高度
+                let minHeight = Math.min(...heightArr);
+                // 高度数组最小的高度的索引
+                let minIndex = heightArr.indexOf(minHeight);
+
+                $(item).css({
+                    position: 'absolute',
+                    top: minHeight + 'px',
+                    left: minIndex * imgWidth + 'px'
+                });
+
+                heightArr[minIndex] += itemHeight;
+            });
         }
-        arr[i].style.cssText = "transition: opacity 4s; opacity: 1;"    //使opacity变化在4秒内完成
-      }
-    }
-  }
-  
-  function aftLoadImg(obj,url){
-    obj.src = url;
-    waterfall(oBox,cols,oBoxw);   //需要再次调用瀑布流方法
-  }
-  }
-  </script>
+
+        // 窗口大小改变
+        $(window).resize(function () {
+            waterfallHandler();
+        });
+    });
+</script>
 </html>
