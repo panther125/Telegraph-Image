@@ -29,26 +29,14 @@
 <script>
   var app=new Vue({
       el: '#app',
-      mounted () {
+      async mounted () {
       var requestOptions = {
         method: 'GET',
         redirect: 'follow',
         //include authorization credientials
         credentials: 'include'
       };
-      Array.prototype.remove = function(from, to) {
-        var rest = this.slice((to || from) + 1 || this.length);
-        this.length = from < 0 ? this.length + from : from;
-        return this.push.apply(this, rest);
-      };
-      var requestOptions = {
-  method: 'GET',
-  redirect: 'follow',
-  //include authorization credientials
-  credentials: 'include'
-  
-};
-fetch("./api/manage/list", requestOptions)
+await fetch("./api/manage/list", requestOptions)
   //判断是否需要登录
   .then(response => {
     if(response.status==401){
