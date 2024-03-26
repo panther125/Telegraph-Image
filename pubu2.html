@@ -96,9 +96,9 @@ fetch("./api/manage/list", requestOptions)
     var targetElement = document.querySelector('.pubu');
     //console.log(result)
     let str ='';
-    for (let i = 0; i < tableData.length; i++){
-      if(tableData[i].name.indexOf(".mp4")>0)continue;
-      str += '<img data-original='+"https://image.gincode.icu/file/"+tableData[i].name+' src='+"https://image.gincode.icu/file/"+tableData[i].name +'>';
+    for (let i = 0; i < imgList.length; i++){
+      if(imgList[i].name.indexOf(".mp4")>0)continue;
+      str += '<img data-original='+"https://image.gincode.icu/file/"+imgList[i].name+' src='+"https://image.gincode.icu/file/"+imgList[i].name +'>';
     }
     targetElement.innerHTML = str
   })
