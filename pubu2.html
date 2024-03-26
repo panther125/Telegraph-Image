@@ -8,40 +8,59 @@
   body{
     background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%);
   }
-   ::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
-	}
+  ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
 
-	 ::-webkit-scrollbar-corner {
-		background-color: transparent;
-	}
+ ::-webkit-scrollbar-corner {
+	background-color: transparent;
+}
 
-	 ::-webkit-scrollbar-thumb {
-		background-color: #49b1f5;
-		background-image: -webkit-linear-gradient(45deg, hsla(0, 0%, 100%, .4) 25%, transparent 0, transparent 50%, hsla(0, 0%, 100%, .4) 0, hsla(0, 0%, 100%, .4) 75%, transparent 0, transparent);
-		border-radius: 2em;
-	}
+ ::-webkit-scrollbar-thumb {
+	background-color: #49b1f5;
+	background-image: -webkit-linear-gradient(45deg, hsla(0, 0%, 100%, .4) 25%, transparent 0, transparent 50%, hsla(0, 0%, 100%, .4) 0, hsla(0, 0%, 100%, .4) 75%, transparent 0, transparent);
+	border-radius: 2em;
+}
 
-	 ::-webkit-scrollbar-track {
-		background-color: rgba(73, 177, 245, .2);
-		border-radius: 2em;
-	}
+ ::-webkit-scrollbar-track {
+	background-color: rgba(73, 177, 245, .2);
+	border-radius: 2em;
+}
   .box {
       position: relative;
-    margin-left: 1.25%;
   }
   img {
       width: 200px;
       height: auto;
-      padding: 5px;
+      padding: 10px;
       border-radius: 20px;
   }
+  #bigimg {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#bigimg img {
+	position: absolute;
+	width: 90%;
+	height: 100%;
+	top: 50%;
+	left: 50%;
+	object-fit: contain;
+	transform: translate(-50%, -50%);
+}
 </style>
 </head>
 <body>
   <div class="box">
   </div>
+  <!-- 放大遮罩层 -->
+    <div id="bigimg" onclick="closeBigImg();"></div>
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
   var imgList
@@ -57,7 +76,7 @@
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
-      str += '<img data-original='+"/file/"+imgList[i].name+' src='+"/file/"+imgList[i].name +'>';
+      str += '<img onclick="showBigImg(this)" data-original='+"/file/"+imgList[i].name+' src='+"/file/"+imgList[i].name +'>';
     }
     targetElement.innerHTML = str
 </script>
@@ -101,5 +120,22 @@
           waterfallHandler();
       });
   });
+  function showBigImg(img) {
+	var bigImg = document.getElementById('bigimg');
+	var imgUrl = img.getAttribute('data-original');
+	bigImg.innerHTML = '<img src="' + imgUrl + '">';
+	bigImg.style.display = 'block';
+	// 获取屏幕的宽度和高度
+	//var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	//var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	//bigImg.style.maxWidth = screenWidth * 0.9 + 'px';
+	//bigImg.style.maxHeight = screenHeight * 0.9 + 'px';
+}
+
+function closeBigImg() {
+	var bigImg = document.getElementById('bigimg');
+	bigImg.style.display = 'none';
+	bigImg.innerHTML = '';
+}
 </script>
 </html>
