@@ -74,50 +74,44 @@ fetch("./api/manage/list", requestOptions)
     })
 </script>
 </body>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-<script>
-    $(function () {
-        // 获取图片的宽度(200px)
-        let imgWidth = $('img').outerWidth(); // 200
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 获取图片的宽度(200px)
+    let imgWidth = document.querySelector('img').offsetWidth; // 200
+    //console.log(imgWidth)
+    waterfallHandler();
 
-        waterfallHandler();
+    // 瀑布流处理
+    function waterfallHandler() {
+        // 获取图片的列数
+        let column = parseInt(window.innerWidth / imgWidth);
 
-        // 瀑布流处理
-        function waterfallHandler() {
-            // 获取图片的列数
-            let column = parseInt($(window).width() / imgWidth);
-            console.log(column)
-            // 高度数组
-            let heightArr = [];
-            for(let i=0; i<column; i++) {
-                heightArr[i] = 0;
-            }
-            console.log(heightArr)
-            // 遍历所有图片进行定位处理
-            $.each($('img'), function (index, item) {
-                // 当前元素的高度
-                let itemHeight = $(item).outerHeight();
-                // 高度数组最小的高度
-                let minHeight = Math.min(...heightArr);
-                // 高度数组最小的高度的索引
-                let minIndex = heightArr.indexOf(minHeight);
-                console.log(itemHeight)
-                console.log(minHeight)
-                console.log(minIndex)
-                $(item).css({
-                    position: 'absolute',
-                    top: minHeight + 'px',
-                    left: minIndex * imgWidth + 'px'
-                });
-
-                heightArr[minIndex] += itemHeight;
-            });
+        // 高度数组
+        let heightArr = [];
+        for (let i = 0; i < column; i++) {
+            heightArr[i] = 0;
         }
+        // 遍历所有图片进行定位处理
+        Array.from(document.querySelectorAll('img')).forEach((item, index) => {
+            // 当前元素的高度
+            let itemHeight = item.offsetHeight;
+            // 高度数组最小的高度
+            let minHeight = Math.min(...heightArr);
+            // 高度数组最小的高度的索引
+            let minIndex = heightArr.indexOf(minHeight);
 
-        // 窗口大小改变
-        $(window).resize(function () {
-            waterfallHandler();
+            item.style.position = 'absolute';
+            item.style.top = minHeight + 'px';
+            item.style.left = minIndex * imgWidth + 'px';
+
+            heightArr[minIndex] += itemHeight;
         });
+    }
+
+    // 窗口大小改变
+    window.addEventListener('resize', function () {
+        waterfallHandler();
     });
+});
 </script>
 </html>
