@@ -76,9 +76,12 @@ fetch("./api/manage/list", requestOptions)
     })
 </script>
 </body>
+</html>
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-    $(function () {
+$(document).ready(function() {
+  // 在这里编写你的代码
+  $(function () {
         // 获取图片的宽度(200px)
         let imgWidth = $('img').outerWidth(); // 200
         //console.log(imgWidth)
@@ -116,5 +119,5 @@ fetch("./api/manage/list", requestOptions)
             waterfallHandler();
         });
     });
+});
 </script>
-</html>
