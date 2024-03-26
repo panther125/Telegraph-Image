@@ -24,17 +24,22 @@
   </div>
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-  $.getJSON("https://image.gincode.icu/api/manage/list", function(data) {
-    //console.log(data)
-    imgList =data;
-    var targetElement = document.querySelector('.box');
+  var imgList
+  $.ajax({
+    url: "https://image.gincode.icu/api/manage/list",
+    async: false,
+    dataType: "json",
+    success: function(data) {
+      imgList = data; // 将请求的数据赋值给全局变量
+    }
+});
+  var targetElement = document.querySelector('.box');
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
       str += '<img data-original='+"/file/"+imgList[i].name+' src='+"/file/"+imgList[i].name +'>';
     }
     targetElement.innerHTML = str
-  });
 </script>
 </body>
 <script>
