@@ -26,36 +26,13 @@
 <script>
   var app=new Vue({
       el: '#app',
-      data: {
-        Number:0,
-        showLogoutButton:false,
-        tableData: [],
-        dialogFormVisible: false,
-        password:'123456'
-      },
       mounted () {
-      //check if the user is logged in
-      //read the basic auth credientials from the browser
       var requestOptions = {
         method: 'GET',
         redirect: 'follow',
         //include authorization credientials
         credentials: 'include'
       };
-      fetch("./api/manage/check", requestOptions)
-        .then(response => response.text())
-        .then(result => {console.log(result);
-          if(result=="true"){
-            this.showLogoutButton=true;
-          }else if(result=="Not using basic auth."){
-            
-          }
-          else{
-            window.location.href="./api/manage/login";
-          }
-        })
-        .catch(error =>  {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
-
       Array.prototype.remove = function(from, to) {
         var rest = this.slice((to || from) + 1 || this.length);
         this.length = from < 0 ? this.length + from : from;
@@ -87,7 +64,7 @@ fetch("./api/manage/list", requestOptions)
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
-      str += '<img data-original='+"https://image.gincode.icu/file/"+imgList[i].name+' src='+"https://image.gincode.icu/file/"+imgList[i].name +'>';
+      str += '<img data-original='+"/file/"+imgList[i].name+' src='+"/file/"+imgList[i].name +'>';
     }
     targetElement.innerHTML = str
   })
