@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
         .pubu {
@@ -60,7 +61,7 @@ fetch("./api/manage/list", requestOptions)
   .then(result => {
     imgList =JSON.parse(result);
     var targetElement = document.querySelector('.pubu');
-    console.log(result)
+    //console.log(result)
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
@@ -71,24 +72,6 @@ fetch("./api/manage/list", requestOptions)
   .catch(error => {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
     }
     })
-    
-</script>
-<script>
-  (function(h,o,t,j,a,r){
-      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-      h._hjSettings={hjid:2531461,hjsv:6};
-      a=o.getElementsByTagName('head')[0];
-      r=o.createElement('script');r.async=1;
-      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-      a.appendChild(r);
-  })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-<script type="text/javascript">
-(function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-})(window, document, "clarity", "script", "7t5ai7agat");
 </script>
 </body>
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -109,7 +92,7 @@ fetch("./api/manage/list", requestOptions)
             for(let i=0; i<column; i++) {
                 heightArr[i] = 0;
             }
-
+            console.log(heightArr)
             // 遍历所有图片进行定位处理
             $.each($('img'), function (index, item) {
                 // 当前元素的高度
@@ -118,7 +101,9 @@ fetch("./api/manage/list", requestOptions)
                 let minHeight = Math.min(...heightArr);
                 // 高度数组最小的高度的索引
                 let minIndex = heightArr.indexOf(minHeight);
-
+                console.log(itemHeight)
+                console.log(minHeight)
+                console.log(minIndex)
                 $(item).css({
                     position: 'absolute',
                     top: minHeight + 'px',
