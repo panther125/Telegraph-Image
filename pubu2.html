@@ -25,9 +25,10 @@
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
   $.getJSON("https://image.gincode.icu/api/manage/list", function(data) {
+    console.log(data)
     imgList =JSON.parse(data);
     var targetElement = document.querySelector('.box');
-    console.log(data)
+    
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
