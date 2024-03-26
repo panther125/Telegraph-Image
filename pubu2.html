@@ -4,21 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style>
-        .pubu {
-            position: relative;
-        }
-        img {
-            width: 200px;
-            vertical-align: top;
-            padding: 5px;
-        }
+<style>
+  body{
+    background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%);
+  }
+  .box {
+      position: relative;
+  }
+  img {
+      width: 200px;
+      height: auto;
+      padding: 10px;
+      border-radius: 20px;
+  }
 </style>
 </head>
 <body>
-  <div id="app">
-    <div class="pubu">
-    </div>
+  <div class="box">
   </div>
 <!-- import Vue before Element -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js" integrity="sha256-kXTEJcRFN330VirZFl6gj9+UM6gIKW195fYZeR3xDhc=" crossorigin="anonymous"></script>
@@ -60,7 +62,7 @@ fetch("./api/manage/list", requestOptions)
   .then(response => response.text()) 
   .then(result => {
     imgList =JSON.parse(result);
-    var targetElement = document.querySelector('.pubu');
+    var targetElement = document.querySelector('.box');
     //console.log(result)
     let str ='';
     for (let i = 0; i < imgList.length; i++){
@@ -74,47 +76,45 @@ fetch("./api/manage/list", requestOptions)
     })
 </script>
 </body>
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var oBox=document.getElementsByClassName("pubu");
-    var oImg=document.getElementsByTagName('img');
-    var oBoxw=oBox[0].offsetWidth;
-    // 获取图片的宽度(200px)
-    let imgWidth = oBoxw; // 200
-    //console.log(imgWidth)
-    waterfallHandler();
-
-    // 瀑布流处理
-    function waterfallHandler() {
-        // 获取图片的列数
-        let column = parseInt(window.innerWidth / imgWidth);
-
-        // 高度数组
-        let heightArr = [];
-        for (let i = 0; i < column; i++) {
-            heightArr[i] = 0;
-        }
-        // 遍历所有图片进行定位处理
-        Array.from(document.querySelectorAll('img')).forEach((item, index) => {
-            // 当前元素的高度
-            let itemHeight = item.offsetHeight;
-            // 高度数组最小的高度
-            let minHeight = Math.min(...heightArr);
-            // 高度数组最小的高度的索引
-            let minIndex = heightArr.indexOf(minHeight);
-
-            item.style.position = 'absolute';
-            item.style.top = minHeight + 'px';
-            item.style.left = minIndex * imgWidth + 'px';
-
-            heightArr[minIndex] += itemHeight;
-        });
-    }
-
-    // 窗口大小改变
-    window.addEventListener('resize', function () {
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    $(function () {
+        // 获取图片的宽度(200px)
+        let imgWidth = $('img').outerWidth(); // 200
+        //console.log(imgWidth)
         waterfallHandler();
+
+        // 瀑布流处理
+        function waterfallHandler() {
+            // 获取图片的列数
+            let column = parseInt($(window).width() / imgWidth);
+            //console.log(column)
+            // 高度数组
+            let heightArr = [];
+            for(let i=0; i<column; i++) {
+                heightArr[i] = 0;
+            }
+            $.each($('img'), function (index, item) {
+                // 当前元素的高度
+                let itemHeight = $(item).outerHeight();
+                // 高度数组最小的高度
+                let minHeight = Math.min(...heightArr);
+                // 高度数组最小的高度的索引
+                let minIndex = heightArr.indexOf(minHeight);
+                $(item).css({
+                    position: 'absolute',
+                    top: minHeight + 'px',
+                    left: minIndex * imgWidth + 'px'
+                });
+
+                heightArr[minIndex] += itemHeight;
+            });
+        }
+
+        // 窗口大小改变
+        $(window).resize(function () {
+            waterfallHandler();
+        });
     });
-});
 </script>
 </html>
