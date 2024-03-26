@@ -60,7 +60,7 @@ fetch("./api/manage/list", requestOptions)
   .then(result => {
     imgList =JSON.parse(result);
     var targetElement = document.querySelector('.pubu');
-    //console.log(result)
+    console.log(result)
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
