@@ -26,7 +26,8 @@
 <script>
   $.getJSON("https://image.gincode.icu/api/manage/list", function(data) {
     console.log(data)
-    imgList =JSON.parse(data);
+    //imgList =JSON.parse(data);
+    imgList = data
     var targetElement = document.querySelector('.box');
     
     let str ='';
