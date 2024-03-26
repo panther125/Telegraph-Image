@@ -76,8 +76,11 @@ fetch("./api/manage/list", requestOptions)
 </body>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
+    var oBox=document.getElementsByClassName("pubu");
+    var oImg=document.getElementsByTagName('img');
+    var oBoxw=oBox[0].offsetWidth;
     // 获取图片的宽度(200px)
-    let imgWidth = document.querySelector('img').offsetWidth; // 200
+    let imgWidth = oBoxw; // 200
     //console.log(imgWidth)
     waterfallHandler();
 
