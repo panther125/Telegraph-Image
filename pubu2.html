@@ -22,54 +22,25 @@
 <body>
   <div class="box">
   </div>
-<!-- import Vue before Element -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js" integrity="sha256-kXTEJcRFN330VirZFl6gj9+UM6gIKW195fYZeR3xDhc=" crossorigin="anonymous"></script>
-<!-- import JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/element-ui@2.15.3/lib/index.js" integrity="sha256-OFVFYfqhQ9nDnKh+NfIsefpy/fnjTwkK909ZYgo45nw=" crossorigin="anonymous"></script>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-  var app=new Vue({
-      el: '#app',
-      async mounted () {
-      var requestOptions = {
-        method: 'GET',
-        redirect: 'follow',
-        //include authorization credientials
-        credentials: 'include'
-      };
-await fetch("./api/manage/list", requestOptions)
-  //判断是否需要登录
-  .then(response => {
-    if(response.status==401){
-      alert("请先登录");
-      window.location.href="./api/manage/login";
-    }
-    else{
-      return response;
-    }
-  })
-  .then(response => response.text()) 
-  .then(result => {
-    imgList =JSON.parse(result);
+  $.getJSON("https://image.gincode.icu/api/manage/list", function(data) {
+    imgList =JSON.parse(data);
     var targetElement = document.querySelector('.box');
-    //console.log(result)
+    console.log(data)
     let str ='';
     for (let i = 0; i < imgList.length; i++){
       if(imgList[i].name.indexOf(".mp4")>0)continue;
       str += '<img data-original='+"/file/"+imgList[i].name+' src='+"/file/"+imgList[i].name +'>';
     }
     targetElement.innerHTML = str
-  })
-  .catch(error => {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
-    }
-    })
+  });
 </script>
 </body>
 </html>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-$(document).ready(function() {
-  // 在这里编写你的代码
-  $(function () {
+// 在这里编写你的代码
+$(function () {
         // 获取图片的宽度(200px)
         let imgWidth = $('img').outerWidth(); // 200
         //console.log(imgWidth)
@@ -107,5 +78,4 @@ $(document).ready(function() {
             waterfallHandler();
         });
     });
-});
 </script>
