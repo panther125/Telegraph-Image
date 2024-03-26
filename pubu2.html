@@ -86,7 +86,7 @@ fetch("./api/manage/list", requestOptions)
         function waterfallHandler() {
             // 获取图片的列数
             let column = parseInt($(window).width() / imgWidth);
-
+            console.log(column)
             // 高度数组
             let heightArr = [];
             for(let i=0; i<column; i++) {
