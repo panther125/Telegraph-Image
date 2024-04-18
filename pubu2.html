@@ -6,28 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-      body{
-	    background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%);
-	  }
-	  ::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
-	}
-	
-	 ::-webkit-scrollbar-corner {
-		background-color: transparent;
-	}
-	
-	 ::-webkit-scrollbar-thumb {
-		background-color: #49b1f5;
-		background-image: -webkit-linear-gradient(45deg, hsla(0, 0%, 100%, .4) 25%, transparent 0, transparent 50%, hsla(0, 0%, 100%, .4) 0, hsla(0, 0%, 100%, .4) 75%, transparent 0, transparent);
-		border-radius: 2em;
-	}
-	
-	 ::-webkit-scrollbar-track {
-		background-color: rgba(73, 177, 245, .2);
-		border-radius: 2em;
-	}
         .box {
             position: relative;
         }
@@ -92,6 +70,8 @@
         const lazyLoad = target => {
             target.src = target.dataset.src;
             target.classList.remove('lazyload');
+            // 调用瀑布流处理函数
+            waterfallHandler();
         };
 
         const observer = new IntersectionObserver((entries, observer) => {
@@ -106,10 +86,34 @@
         lazyImages.forEach(image => {
             observer.observe(image);
         });
-    </script>
 
-    <script>
-        // Your existing JavaScript code for image layout and zoom functionality
+        // 瀑布流处理函数
+        function waterfallHandler() {
+            // 获取图片的宽度(200px)
+            let imgWidth = $('img').outerWidth(); // 200
+            // 获取图片的列数
+            let column = parseInt($(window).width() / imgWidth);
+            // 高度数组
+            let heightArr = [];
+            for (let i = 0; i < column; i++) {
+                heightArr[i] = 0;
+            }
+            $.each($('img'), function (index, item) {
+                let itemHeight = $(item).outerHeight();
+                let minHeight = Math.min(...heightArr);
+                let minIndex = heightArr.indexOf(minHeight);
+                $(item).css({
+                    position: 'absolute',
+                    top: minHeight + 'px',
+                    left: minIndex * imgWidth + 'px'
+                });
+                heightArr[minIndex] += itemHeight;
+            });
+        }
+	     // 窗口大小改变
+      $(window).resize(function () {
+          waterfallHandler();
+      });
     </script>
 </body>
 
