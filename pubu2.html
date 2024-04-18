@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+	    body{
+    background: linear-gradient(90deg, #ffd7e4 0%, #c8f1ff 100%);
+  }
         .box {
             position: relative;
         }
@@ -61,7 +64,7 @@
         let str = '';
         for (let i = 0; i < imgList.length; i++) {
             if (imgList[i].name.indexOf(".mp4") > 0) continue;
-            str += '<img data-src="/file/' + imgList[i].name + '" src="placeholder.jpg" class="lazyload">';
+            str += '<img onclick="showBigImg(this)" data-src="/file/' + imgList[i].name + '" src="placeholder.jpg" class="lazyload">';
         }
         targetElement.innerHTML = str;
 
