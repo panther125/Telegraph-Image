@@ -76,10 +76,10 @@ async function errorHandling(context) {
     }
 
     console.log(context.env.BASIC_USER)
+    console.log(context.request.url)
     if(typeof context.env.BASIC_USER == "undefined" || context.env.BASIC_USER == null || context.env.BASIC_USER == ""){
         return context.next();
     }else{
-        console.log(context.request.url);
         if(context.request.url === 'pubu2' || context.request.url === 'pubu'){
             return context.next();
         }
