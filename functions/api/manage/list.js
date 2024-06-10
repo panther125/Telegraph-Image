@@ -35,8 +35,11 @@ export async function onRequest(context) {
         ListType: key.metadata?.ListType,
         rating_label: key.metadata?.rating_label,
     }));
-    console.log(res)
-    const info = JSON.stringify(res);
+    //console.log(res)
+    const response = {
+        count: value.keys.length, // Total number of items
+        datalist: res, // Paginated data list
+    };
+    const info = JSON.stringify(response);
     return new Response(info);
-
   }
