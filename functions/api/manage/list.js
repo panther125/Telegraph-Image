@@ -10,7 +10,9 @@ export async function onRequest(context) {
     } = context;
     console.log(env)
     const value = await env.img_url.list();
-
+    const page = parseInt(url.searchParams.get("page")) || 1;
+    const pageSize = parseInt(url.searchParams.get("pageSize")) || 10;
+    const offset = (page - 1) * pageSize;
     console.log(value)
     //let res=[]
     //for (let i in value.keys){
@@ -24,7 +26,15 @@ export async function onRequest(context) {
       //}
       //res.push(tmp)
     //}
-    const info = JSON.stringify(value.keys);
+
+    const paginatedKeys = value.keys.slice(offset, offset + pageSize);
+    const res = paginatedKeys.map(key => ({
+        name: key.name,
+        TimeStamp: key.metadata?.TimeStamp,
+        ListType: key.metadata?.ListType,
+        rating_label: key.metadata?.rating_label,
+    }));
+    const info = JSON.stringify(res);
     return new Response(info);
 
   }
