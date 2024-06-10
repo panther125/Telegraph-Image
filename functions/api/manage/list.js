@@ -14,7 +14,7 @@ export async function onRequest(context) {
     if(url.searchParams.get("count") === 'all'){
         const response = {
             count: value.keys.length, // Total number of items
-            datalist: value, // Paginated data list
+            datalist: value.keys, // Paginated data list
         };
         const info = JSON.stringify(response);
         return new Response(info);
