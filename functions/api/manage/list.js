@@ -11,6 +11,14 @@ export async function onRequest(context) {
     console.log(env)
     const value = await env.img_url.list();
     const url = new URL(request.url);
+    if(url.searchParams.get("count") === 'all'){
+        const response = {
+            count: value.keys.length, // Total number of items
+            datalist: value, // Paginated data list
+        };
+        const info = JSON.stringify(response);
+        return new Response(info);
+    }
     const start = parseInt(url.searchParams.get("start")) || 0;
     const count = parseInt(url.searchParams.get("count")) || 10;
     const offset = start * count;
