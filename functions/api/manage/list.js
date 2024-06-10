@@ -10,6 +10,7 @@ export async function onRequest(context) {
     } = context;
     console.log(env)
     const value = await env.img_url.list();
+    const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page")) || 1;
     // const pageSize = parseInt(url.searchParams.get("pageSize")) || 10;
     const offset = (page - 1) * 10;
