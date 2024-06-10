@@ -13,7 +13,7 @@ export async function onRequest(context) {
     const page = parseInt(url.searchParams.get("page")) || 1;
     const pageSize = parseInt(url.searchParams.get("pageSize")) || 10;
     const offset = (page - 1) * pageSize;
-    console.log(value)
+    //console.log(value)
     //let res=[]
     //for (let i in value.keys){
       //add to res
@@ -34,6 +34,7 @@ export async function onRequest(context) {
         ListType: key.metadata?.ListType,
         rating_label: key.metadata?.rating_label,
     }));
+    console.log(res)
     const info = JSON.stringify(res);
     return new Response(info);
 
