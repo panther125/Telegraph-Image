@@ -92,7 +92,7 @@ fetch("./api/manage/list", requestOptions)
   })
   .then(response => response.text()) 
   .then(result => {
-    imgList =JSON.parse(result);
+    imgList =JSON.parse(result).datalist;
     var targetElement = document.querySelector('.pubu');
     console.log(result)
     for (let i = 0; i < imgList.length; i++){
