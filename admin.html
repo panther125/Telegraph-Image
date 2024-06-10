@@ -257,7 +257,7 @@ fetch("./api/manage/list?count=all", requestOptions)
     }
   })
   .then(response => response.text()) 
-  .then(result => {this.tableData=JSON.parse(result);console.log(result);this.Number=this.tableData.length})
+  .then(result => {this.tableData=JSON.parse(result).datalist;console.log(result);this.Number=this.tableData.length})
   .catch(error => {alert("An error occurred while synchronizing data with the server, please check the network connection");console.log('error', error)});
 
     }
