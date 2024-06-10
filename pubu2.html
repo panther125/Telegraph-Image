@@ -54,9 +54,10 @@
         $.ajax({
             url: "https://image.gincode.icu/api/manage/list",
             async: false,
+            data: "count=all",
             dataType: "json",
             success: function (data) {
-                imgList = data; // 将请求的数据赋值给全局变量
+                imgList = data.dataList; // 将请求的数据赋值给全局变量
             }
         });
 
