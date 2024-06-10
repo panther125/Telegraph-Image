@@ -11,24 +11,10 @@ export async function onRequest(context) {
     console.log(env)
     const value = await env.img_url.list();
     const url = new URL(request.url);
-    const page = parseInt(url.searchParams.get("page")) || 1;
-    // const pageSize = parseInt(url.searchParams.get("pageSize")) || 10;
-    const offset = (page - 1) * 10;
-    //console.log(value)
-    //let res=[]
-    //for (let i in value.keys){
-      //add to res
-      //"metadata":{"TimeStamp":19876541,"ListType":"None","rating_label":"None"}
-      //let tmp = {
-      //  name: value.keys[i].name,
-      //  TimeStamp: value.keys[i].metadata.TimeStamp,
-      //  ListType: value.keys[i].metadata.ListType,
-      //  rating_label: value.keys[i].metadata.rating_label,
-      //}
-      //res.push(tmp)
-    //}
-
-    const paginatedKeys = value.keys.slice(offset, offset + 10);
+    const start = parseInt(url.searchParams.get("start")) || 0;
+    const count = parseInt(url.searchParams.get("count")) || 10;
+    const offset = start * count;
+    const paginatedKeys = value.keys.slice(offset, offset + count);
     const res = paginatedKeys.map(key => ({
         name: key.name,
         TimeStamp: key.metadata?.TimeStamp,
