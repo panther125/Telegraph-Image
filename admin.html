@@ -245,7 +245,7 @@
 };
 
 
-fetch("./api/manage/list?page=1", requestOptions)
+fetch("./api/manage/list?count=all", requestOptions)
   //判断是否需要登录
   .then(response => {
     if(response.status==401){
