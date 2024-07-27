@@ -432,9 +432,9 @@
         fetch("./api/manage/list?count=all", { method: 'GET', credentials: 'include' })
           .then(response => response.json())
           .then(result => {
-            console.log(result);
-            console.log(result.datalist);
-            this.tableData = result.map(file => ({ ...file, selected: false }));
+            //console.log(result);
+            //console.log(result.datalist);
+            this.tableData = result.datalis;
             this.updateStats();
             const savedSortOption = localStorage.getItem('sortOption');
             if (savedSortOption) {
