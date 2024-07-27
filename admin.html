@@ -433,6 +433,7 @@
           .then(response => response.json())
           .then(result => {
             console.log(result);
+            console.log(result.datalist);
             this.tableData = result.map(file => ({ ...file, selected: false }));
             this.updateStats();
             const savedSortOption = localStorage.getItem('sortOption');
