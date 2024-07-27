@@ -77,7 +77,8 @@ function ajaxPanWal() {
     $("#loadmore").show();
     jigsaw.ajaxing = true;
 	if(jigsaw.pageno === 0){
-		jigsaw.pageSize = 20
+		jigsaw.pageSize = 20;
+		jigsaw.pageno++;
 	}else{
 		jigsaw.pageSize = 10
 	}
