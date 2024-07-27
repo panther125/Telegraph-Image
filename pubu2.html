@@ -40,102 +40,123 @@
             object-fit: contain;
             transform: translate(-50%, -50%);
         }
+		wc-waterfall > * {
+		  border-radius: 6px;
+		  background-color: #80808020;
+		  font-size: 2em;
+		  text-align: center;
+		}
+
+		wc-waterfall > *:hover {
+		  background-color: #80808040;
+		}
     </style>
 </head>
 
 <body>
-    <div class="box"></div>
-    <!-- 放大遮罩层 -->
+	 <wc-waterfall id="fl" cols="5" gap="10">
+	</wc-waterfall>
     <div id="bigimg" onclick="closeBigImg();"></div>
-
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script>
-        var imgList;
-        $.ajax({
+</body>
+<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/onepage-scroll/1.3.1/jquery.onepage-scroll.min.js" type="application/javascript"></script>
+<script src="https://wallpaper.gincode.icu/js/index.iife.js"></script>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+var jigsaw = {
+    count: 0,            // 已加载的总数
+    halfHtml: '',
+    pageno: 0,	// 最后一个加载的html
+    pageSize: 10,
+    loadBig: false,      // 是否已加载最大的那个
+    ajaxing: false        //是否正在ajax加载
+};
+//加载图床图片
+function ajaxPanWal() {
+    if (jigsaw.ajaxing === true) return false;
+    $("#loadmore").html('努力加载中……');
+    $("#loadmore").show();
+    jigsaw.ajaxing = true;
+	if(jigsaw.pageno === 0){
+		jigsaw.pageSize = 20
+	}else{
+		jigsaw.pageSize = 10
+	}
+	var jsonData
+	$.ajax({
             url: "https://image.gincode.icu/api/manage/list",
             async: false,
-            data: "count=all",
+            data: "start=" + jigsaw.pageno + "&count=" + jigsaw.pageSize,
             dataType: "json",
             success: function (data) {
-                imgList = data.datalist; // 将请求的数据赋值给全局变量
+                jsonData = data; // 将请求的数据赋值给全局变量
             }
         });
+	jigsaw.pageno++;
+    const fl = document.getElementById("fl")
+	for (var i = jigsaw.pageno * jigsaw.pageSize; i < (jigsaw.pageno + 1) * jigsaw.pageSize; i++) {
+		imgList = jsonData.datalist
+		if (imgList[i].name.indexOf(".mp4") > 0) continue;
+		const div = document.createElement('div')
+		div.innerHTML = '<img onclick="showBigImg(this)" data-src="https://image.gincode.icu/file/' + imgList[i].name + '" src="https://image.gincode.icu/file/' + imgList[i].name + '" class="lazyload">'
+		fl.appendChild(div)
+	}
+	resizeHeight();
+	jigsaw.ajaxing = false;
+	waterfallHandler();
+	if (jsonData.datalist.length === 0) {
+		$("#loadmore").html('所有的壁纸都已经加载完啦！');
+	} else {
+		$("#loadmore").hide();
+	}
+    return true;
+}
 
-        var targetElement = document.querySelector('.box');
-        let str = '';
-        for (let i = 0; i < imgList.length; i++) {
-            if (imgList[i].name.indexOf(".mp4") > 0) continue;
-            str += '<img onclick="showBigImg(this)" data-src="/file/' + imgList[i].name + '" src="placeholder.jpg" class="lazyload">';
+$(function () {
+    // 监听滚动消息
+    $(window).scroll(function () {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        if (scrollTop + $(window).height() + 57 >= $(document).height() && scrollTop > 20) {
+            ajaxPanWal();   // 初始加载壁纸
+			resizeHeight();
         }
-        targetElement.innerHTML = str;
+    });
+});
 
-        const lazyImages = document.querySelectorAll('.lazyload');
-
-        const lazyLoad = target => {
-            target.src = target.dataset.src;
-            target.classList.remove('lazyload');
-            // 调用瀑布流处理函数
-            waterfallHandler();
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    lazyLoad(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
-
-        lazyImages.forEach(image => {
-            observer.observe(image);
-        });
-
-        // 瀑布流处理函数
-        function waterfallHandler() {
-            // 获取图片的宽度(200px)
-            let imgWidth = $('img').outerWidth(); // 200
-            // 获取图片的列数
-            let column = parseInt($(window).width() / imgWidth);
-            // 高度数组
-            let heightArr = [];
-            for (let i = 0; i < column; i++) {
-                heightArr[i] = 0;
-            }
-            $.each($('img'), function (index, item) {
-                let itemHeight = $(item).outerHeight();
-                let minHeight = Math.min(...heightArr);
-                let minIndex = heightArr.indexOf(minHeight);
-                $(item).css({
-                    position: 'absolute',
-                    top: minHeight + 'px',
-                    left: minIndex * imgWidth + 'px'
-                });
-                heightArr[minIndex] += itemHeight;
-            });
-        }
-	     // 窗口大小改变
-      $(window).resize(function () {
-          waterfallHandler();
-      });
-	      function showBigImg(img) {
+function showBigImg(img) {
 	var bigImg = document.getElementById('bigimg');
 	var imgUrl = img.getAttribute('data-src');
 	bigImg.innerHTML = '<img src="' + imgUrl + '">';
 	bigImg.style.display = 'block';
-	// 获取屏幕的宽度和高度
-	//var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-	//var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-	//bigImg.style.maxWidth = screenWidth * 0.9 + 'px';
-	//bigImg.style.maxHeight = screenHeight * 0.9 + 'px';
 }
-
 function closeBigImg() {
 	var bigImg = document.getElementById('bigimg');
 	bigImg.style.display = 'none';
 	bigImg.innerHTML = '';
 }
-    </script>
-</body>
 
+function waterfallHandler() {
+    // 获取图片的宽度(200px)
+    let imgWidth = $('img').outerWidth(); // 200
+    // 获取图片的列数
+    let column = parseInt($(window).width() / imgWidth);
+    const fl = document.getElementById("fl")
+	fl.setAttribute('cols', column);
+}
+ // 大小改变
+window.onresize = function () {
+    resizeHeight();
+};
+// 重新调整高度
+function resizeHeight() {
+    var newHeight = $("#walBox").width() * (0.618 / 2);  
+            $(".jigsaw .item").css('height', newHeight);
+            $(".jigsaw .Hhalf").css('height', newHeight / 2);
+    return true;
+}
+// 初始化
+window.onload = function () {
+    ajaxPanWal();   // 初始加载壁纸
+    resizeHeight();
+}; 
+</script>
 </html>
