@@ -92,9 +92,11 @@ function ajaxPanWal() {
             }
         });
 	jigsaw.pageno++;
-    const fl = document.getElementById("fl")
-	for (var i = jigsaw.pageno * jigsaw.pageSize; i < (jigsaw.pageno + 1) * jigsaw.pageSize; i++) {
+	console.log(jsonData);
+       const fl = document.getElementById("fl")
+	for (var i = jigsaw.pageno * jigsaw.pageSize; i < jigsaw.pageno * jigsaw.pageSize + jsonData.datalist.length(); i++) {
 		imgList = jsonData.datalist
+		console.log(imageList);
 		if (imgList[i].name.indexOf(".mp4") > 0) continue;
 		const div = document.createElement('div')
 		div.innerHTML = '<img onclick="showBigImg(this)" data-src="https://image.gincode.icu/file/' + imgList[i].name + '" src="https://image.gincode.icu/file/' + imgList[i].name + '" class="lazyload">'
