@@ -92,9 +92,9 @@ function ajaxPanWal() {
             }
         });
 	jigsaw.pageno++;
-	console.log(jsonData);
+	//console.log(jsonData);
 	var imgList = jsonData.datalist;
-	console.log(imgList);
+	//console.log(imgList);
        const fl = document.getElementById("fl")
 	for (var i = 0; i < imgList.length; i++) {
 		if (imgList[i].name.indexOf(".mp4") > 0) continue;
