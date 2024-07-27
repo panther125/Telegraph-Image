@@ -93,7 +93,7 @@ function ajaxPanWal() {
         });
 	jigsaw.pageno++;
 	console.log(jsonData);
-	var imgList = jsonData.datalist;
+	var imgList = JSON.parse(jsonData.datalist);
 	console.log(imgList);
        const fl = document.getElementById("fl")
 	for (var i = jigsaw.pageno * jigsaw.pageSize; i < jigsaw.pageno * jigsaw.pageSize + imgList.length; i++) {
