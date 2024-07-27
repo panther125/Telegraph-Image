@@ -434,7 +434,7 @@
           .then(result => {
             //console.log(result);
             //console.log(result.datalist);
-            this.tableData = result.datalis;
+            this.tableData = result.datalist.map(file => ({ ...file, selected: false }));
             this.updateStats();
             const savedSortOption = localStorage.getItem('sortOption');
             if (savedSortOption) {
