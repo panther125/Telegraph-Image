@@ -429,8 +429,8 @@
           .then(response => response.text())
           .then(result => result === "true" ? this.showLogoutButton = true : window.location.href = "./api/manage/login")
           .catch(() => this.$message.error('同步数据时出错，请检查网络连接'));
-
-        fetch("./api/manage/list", { method: 'GET', credentials: 'include' })
+        conlog.log("test);
+        fetch("./api/manage/list?count=all", { method: 'GET', credentials: 'include' })
           .then(response => response.json())
           .then(result => {
             this.tableData = result.map(file => ({ ...file, selected: false }));
